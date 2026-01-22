@@ -66,12 +66,12 @@ function Board({ id }) {
 
       socket.on("receiveDrawingUpdate", handleReceiveDrawingUpdate);
       socket.on("loadCanvas", handleLoadCanvas);
-      socket.on("unauthorized", handleUnauthorized);
+      // socket.on("unauthorized", handleUnauthorized);
 
       return () => {
         socket.off("receiveDrawingUpdate", handleReceiveDrawingUpdate);
         socket.off("loadCanvas", handleLoadCanvas);
-        socket.off("unauthorized", handleUnauthorized);
+        // socket.off("unauthorized", handleUnauthorized);
       };
     }
   }, [id, setElements, setHistory]);
@@ -80,7 +80,7 @@ function Board({ id }) {
     const fetchCanvasData = async () => {
       if (id && token) {
         try {
-          const response = await axios.get(`https://api-whiteboard-az.onrender.com/api/canvas/load/${id}`, {
+          const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/canvas/load/${id}`, {
             headers: { Authorization: `Bearer ${token}` },
           });
           setCanvasId(id); // Set the current canvas ID
