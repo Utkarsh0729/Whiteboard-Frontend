@@ -9,7 +9,7 @@ const Sidebar = () => {
   const [canvases, setCanvases] = useState([]);
   const [sharedCanvases, setSharedCanvases] = useState([]);
   const token = localStorage.getItem('whiteboard_user_token');
-  const { canvasId, setCanvasId, setElements, setHistory, isUserLoggedIn, setUserLoginStatus } = useContext(boardContext);
+  const { canvasId, setCanvasId, isUserLoggedIn, setUserLoginStatus } = useContext(boardContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -18,14 +18,61 @@ const Sidebar = () => {
   const [activeTab, setActiveTab] = useState('my-canvases');
   const [shareDebugInfo, setShareDebugInfo] = useState('');
 
-  const { id } = useParams(); 
+  const { id } = useParams();
+
+  const fetchCanvases = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/canvas/list`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setCanvases(response.data);
+      console.log('My canvases:', response.data);
+      
+      if (response.data.length === 0) {
+        const newCanvas = await handleCreateCanvas();
+        if (newCanvas) {
+          setCanvasId(newCanvas._id);
+          handleCanvasClick(newCanvas._id);
+        }
+      } else if (!canvasId && response.data.length > 0) {
+        if(!id){
+          setCanvasId(response.data[0]._id);
+          handleCanvasClick(response.data[0]._id);
+        }
+      }
+    } catch (error) {
+      console.error('Error fetching canvases:', error);
+      if (error.response?.status === 401) {
+        setUserLoginStatus(false);
+        localStorage.removeItem('whiteboard_user_token');
+        navigate('/login');
+      }
+    }
+  };
+
+  const fetchSharedCanvases = async () => {
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/canvas/shared`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setSharedCanvases(response.data);
+      console.log('Shared canvases:', response.data);
+    } catch (error) {
+      console.error('Error fetching shared canvases:', error);
+      if (error.response?.status === 401) {
+        setUserLoginStatus(false);
+        localStorage.removeItem('whiteboard_user_token');
+        navigate('/login');
+      }
+    }
+  };
 
   useEffect(() => {
     if (isUserLoggedIn) {
       fetchCanvases();
       fetchSharedCanvases();
     }
-  }, [isUserLoggedIn]);
+  }, [isUserLoggedIn, token, canvasId, id, setCanvasId, setUserLoginStatus, navigate]);
 
   const fetchCanvases = async () => {
     try {

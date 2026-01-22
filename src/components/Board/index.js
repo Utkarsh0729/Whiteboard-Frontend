@@ -58,20 +58,12 @@ function Board({ id }) {
         setHistory(initialElements);
       };
 
-      const handleUnauthorized = (data) => {
-        console.log(data.message);
-        alert("Access Denied: You cannot edit this canvas.");
-        setIsAuthorized(false);
-      };
-
       socket.on("receiveDrawingUpdate", handleReceiveDrawingUpdate);
       socket.on("loadCanvas", handleLoadCanvas);
-      // socket.on("unauthorized", handleUnauthorized);
 
       return () => {
         socket.off("receiveDrawingUpdate", handleReceiveDrawingUpdate);
         socket.off("loadCanvas", handleLoadCanvas);
-        // socket.off("unauthorized", handleUnauthorized);
       };
     }
   }, [id, setElements, setHistory]);

@@ -4,7 +4,6 @@ import axios from "axios";
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL + "/api/canvas";
 
 const token = localStorage.getItem('whiteboard_user_token')
-const canvasId = localStorage.getItem('canvas_id')
 
 export const updateCanvas = async (canvasId, elements) => {
   try {
