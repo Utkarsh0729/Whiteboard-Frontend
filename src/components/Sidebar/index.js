@@ -67,12 +67,13 @@ const Sidebar = () => {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (isUserLoggedIn) {
       fetchCanvases();
       fetchSharedCanvases();
     }
-  }, [isUserLoggedIn, token, canvasId, id, setCanvasId, setUserLoginStatus, navigate, fetchCanvases, fetchSharedCanvases]);
+  }, [isUserLoggedIn]);
 
   const handleCreateCanvas = async () => {
     try {
