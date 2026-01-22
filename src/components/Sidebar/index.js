@@ -73,7 +73,7 @@ const Sidebar = () => {
       fetchCanvases();
       fetchSharedCanvases();
     }
-  }, [isUserLoggedIn]);
+  }, []);
 
   const handleCreateCanvas = async () => {
     try {
