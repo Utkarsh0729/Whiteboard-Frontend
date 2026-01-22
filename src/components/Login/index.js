@@ -17,7 +17,7 @@ const Login = () => {
     setError('');
     
     try {
-      const response = await fetch('https://whiteboard-backend-8ww5.onrender.com/api/users/login', {
+      const response = await fetch('https://api-whiteboard-az.onrender.com/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -63,7 +63,7 @@ const Login = () => {
     setError('');
 
     try {
-      const response = await fetch('https://whiteboard-backend-8ww5.onrender.com/api/users/resend-verification', {
+      const response = await fetch('https://api-whiteboard-az.onrender.com/api/users/resend-verification', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
