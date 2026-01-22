@@ -29,7 +29,7 @@ const Register = () => {
     setSuccess('');
     
     try {
-      const response = await fetch('https://api-whiteboard-az.onrender.com/api/users/register', {
+      const response = await fetch('https://whiteboard-backend-8ww5.onrender.com/api/users/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ const Register = () => {
     setError('');
 
     try {
-      const response = await fetch('https://api-whiteboard-az.onrender.com/api/users/resend-verification', {
+      const response = await fetch('https://whiteboard-backend-8ww5.onrender.com/api/users/resend-verification', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -9,7 +9,7 @@ const Sidebar = () => {
   const [canvases, setCanvases] = useState([]);
   const [sharedCanvases, setSharedCanvases] = useState([]);
   const token = localStorage.getItem('whiteboard_user_token');
-  const { canvasId, setCanvasId, setElements, setHistory, isUserLoggedIn, setUserLoginStatus } = useContext(boardContext);
+  const { canvasId, setCanvasId, isUserLoggedIn, setUserLoginStatus } = useContext(boardContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
@@ -18,18 +18,11 @@ const Sidebar = () => {
   const [activeTab, setActiveTab] = useState('my-canvases');
   const [shareDebugInfo, setShareDebugInfo] = useState('');
 
-  const { id } = useParams(); 
-
-  useEffect(() => {
-    if (isUserLoggedIn) {
-      fetchCanvases();
-      fetchSharedCanvases();
-    }
-  }, [isUserLoggedIn]);
+  const { id } = useParams();
 
   const fetchCanvases = async () => {
     try {
-      const response = await axios.get('https://api-whiteboard-az.onrender.com/api/canvas/list', {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/canvas/list`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setCanvases(response.data);
@@ -59,7 +52,7 @@ const Sidebar = () => {
 
   const fetchSharedCanvases = async () => {
     try {
-      const response = await axios.get('https://api-whiteboard-az.onrender.com/api/canvas/shared', {
+      const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/canvas/shared`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setSharedCanvases(response.data);
@@ -74,9 +67,17 @@ const Sidebar = () => {
     }
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    if (isUserLoggedIn) {
+      fetchCanvases();
+      fetchSharedCanvases();
+    }
+  }, [isUserLoggedIn]);
+
   const handleCreateCanvas = async () => {
     try {
-      const response = await axios.post('https://api-whiteboard-az.onrender.com/api/canvas/create', {}, {
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/canvas/create`, {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
       console.log('Canvas created:', response.data);
@@ -101,7 +102,7 @@ const Sidebar = () => {
     }
     
     try {
-      await axios.delete(`https://api-whiteboard-az.onrender.com/api/canvas/delete/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/canvas/delete/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       fetchCanvases();
@@ -171,7 +172,7 @@ const Sidebar = () => {
       });
 
       const response = await axios.post(
-        `https://api-whiteboard-az.onrender.com/api/canvas/share`,
+        `${process.env.REACT_APP_API_BASE_URL}/api/canvas/share`,
         { 
           canvasId: currentCanvasId,
           email: email.trim() 
