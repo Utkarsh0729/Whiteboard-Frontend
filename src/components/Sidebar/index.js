@@ -72,7 +72,7 @@ const Sidebar = () => {
       fetchCanvases();
       fetchSharedCanvases();
     }
-  }, [isUserLoggedIn, token, canvasId, id, setCanvasId, setUserLoginStatus, navigate]);
+  }, [isUserLoggedIn, token, canvasId, id, setCanvasId, setUserLoginStatus, navigate, fetchCanvases, fetchSharedCanvases]);
 
   const handleCreateCanvas = async () => {
     try {
