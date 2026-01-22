@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from "React";
+import React, { useCallback, useReducer } from "react";
 import boardContext from "./board-context";
 import { BOARD_ACTIONS, TOOL_ACTION_TYPES, TOOL_ITEMS } from "../constants";
 import {
